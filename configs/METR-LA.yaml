@@ -1,0 +1,64 @@
+# global
+seed: 131
+device: cuda:0
+mode: train
+debug: False 
+ablation: all
+
+# data
+data_dir: data
+dataset: METR-LA
+input_length: 12
+batch_size: 64  
+test_batch_size: 64
+graph_file: data/METR-LA/adj_mx.npz 
+num_nodes: 207
+
+# federated learning
+num_clients: 4
+local_epochs: 1
+num_rounds: 100
+
+# model 
+output_T_dim: 12
+d_input: 1                 
+d_output: 1                 
+d_model: 64
+dropout: 0.1
+layers: 2
+heads: 2
+K : 64
+bank_gamma : 0.5 
+kw : 1.5
+mi_w : 4
+embed_dim: 2
+
+# train
+lr_init: 0.005
+early_stop: True
+early_stop_patience: 20
+grad_norm: True
+max_grad_norm: 5
+MMI: False
+lr_patience: 5
+lr_mode: only
+
+use_RevIN: False
+
+# personal
+use_personalized_aggregation: true  
+temperature: 1.0                    
+self_weight_boost: 1.0              
+ 
+aggregation_method: 'attention'
+
+
+# Traffic pattern learning
+traffic_pattern_N: 16                   
+traffic_pattern_c: 64                    
+traffic_pattern_temperature: 0.1         
+
+# Pattern Repository 
+pattern_top_k: 3                         
+pattern_current_weight: 0.4              
+pattern_similarity_threshold: 0.3  
