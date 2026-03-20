@@ -11,6 +11,7 @@ pip install -r requirements.txt
 
 ## Data
 You can download data from [BasicTS](https://github.com/GestaltCogTeam/BasicTS) and unzip it into the data directory.
+If the adjacency matrices are stored in `.pkl` format, they should be converted to compressed `.npz` format.
 ```bash
 python data/generate_training_data.py
 ```
