@@ -54,10 +54,6 @@ class FederatedRunner:
         import torch
         import numpy as np
         
-        # from lib.utils import print_model_parameters
-        # self.logger.info("=== Federated Learning Starts - Model Parameter Information ===")
-        # print_model_parameters(self.clients[0].model, self.logger, "Client Model")
-        
         best_mae = float('inf')
         best_client_id = 0
         

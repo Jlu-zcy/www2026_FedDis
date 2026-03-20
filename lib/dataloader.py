@@ -74,16 +74,16 @@ class MinMax11Scaler:
             return ((data + 1.) / 2.) * (self.max - self.min) + self.min
 
 
-def STDataloader_T(X, Y, time_label, c, batch_size, device,shuffle=True, drop_last=True,train_flag=True):
+def STDataloader_T(X, Y, batch_size, device,shuffle=True, drop_last=True,train_flag=True):
 
     TensorFloat = torch.FloatTensor
     TensorInt = torch.LongTensor
     if train_flag:
-        X, Y ,time_label,c= TensorFloat(X).to(device), TensorFloat(Y).to(device), TensorInt(time_label).to(device), TensorFloat(c).to(device)
-        data = torch.utils.data.TensorDataset(X, Y, time_label, c)
+        X, Y = TensorFloat(X).to(device), TensorFloat(Y).to(device)
+        data = torch.utils.data.TensorDataset(X, Y)
     else:
-        X, Y ,c = TensorFloat(X).to(device), TensorFloat(Y).to(device), TensorFloat(c).to(device)
-        data = torch.utils.data.TensorDataset(X, Y, c)
+        X, Y = TensorFloat(X).to(device), TensorFloat(Y).to(device)
+        data = torch.utils.data.TensorDataset(X, Y)
 
     dataloader = torch.utils.data.DataLoader(
         data,
@@ -111,8 +111,6 @@ def get_dataloader(data_dir, dataset, batch_size, test_batch_size, device, scala
         cat_data = np.load(os.path.join(data_dir, dataset, category + '.npz'))
         data['x_' + category] = cat_data['x']
         data['y_' + category] = cat_data['y']
-        data['time_'+category] = cat_data['time_label'] 
-        data['c_'+category] = cat_data['c']
         
     scaler = normalize_data(data['x_train'], scalar_type)
     
@@ -124,8 +122,6 @@ def get_dataloader(data_dir, dataset, batch_size, test_batch_size, device, scala
     dataloader['train'] = STDataloader_T(
         data['x_train'],
         data['y_train'],
-        data['time_train'],
-        data['c_train'],
         batch_size,
         device=device,
         shuffle=True
@@ -134,17 +130,13 @@ def get_dataloader(data_dir, dataset, batch_size, test_batch_size, device, scala
     dataloader['val'] = STDataloader_T(
         data['x_val'], 
         data['y_val'],
-        data['time_val'],
-        data['c_val'],
         test_batch_size,
         device=device, 
         shuffle=False
     )
     dataloader['test'] = STDataloader_T(
         data['x_test'], 
-        data['y_test'],
-        None,
-        data['c_test'], 
+        data['y_test'], 
         test_batch_size,
         device=device, 
         shuffle=False, 

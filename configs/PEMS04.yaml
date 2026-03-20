@@ -3,7 +3,6 @@ seed: 3407
 device: cuda:2
 mode: train
 debug: False
-ablation: all
 
 # data
 data_dir: data

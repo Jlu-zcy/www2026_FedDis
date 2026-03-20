@@ -27,10 +27,10 @@ class Client:
         self.num_nodes = self._get_num_nodes()        
 
     def _get_num_nodes(self):        
-        if hasattr(self.model, 'st_encoder4invariant') and hasattr(self.model.st_encoder4invariant, 'node_embeddings'):
-            return self.model.st_encoder4invariant.node_embeddings.shape[0]
-        elif hasattr(self.model, 'st_encoder4variant') and hasattr(self.model.st_encoder4variant, 'node_embeddings'):
-            return self.model.st_encoder4variant.node_embeddings.shape[0]
+        if hasattr(self.model, 'globalST_encoder') and hasattr(self.model.globalST_encoder, 'node_embeddings'):
+            return self.model.globalST_encoder.node_embeddings.shape[0]
+        elif hasattr(self.model, 'personalST_encoder') and hasattr(self.model.personalST_encoder, 'node_embeddings'):
+            return self.model.personalST_encoder.node_embeddings.shape[0]
         elif hasattr(self.args, 'num_nodes'):
             return self.args.num_nodes
             
@@ -91,13 +91,13 @@ class Client:
     def _extract_node_embeddings(self, use_cache=True):
         if use_cache and hasattr(self, '_cached_embeddings') and self._cached_embeddings is not None:
             return self._cached_embeddings
-        if hasattr(self.model, 'st_encoder4invariant') and hasattr(self.model.st_encoder4invariant, 'node_embeddings'):
-            node_embeddings = self.model.st_encoder4invariant.node_embeddings
+        if hasattr(self.model, 'globalST_encoder') and hasattr(self.model.globalST_encoder, 'node_embeddings'):
+            node_embeddings = self.model.globalST_encoder.node_embeddings
             if use_cache:
                 self._cached_embeddings = node_embeddings.detach()
             return node_embeddings
-        elif hasattr(self.model, 'st_encoder4variant') and hasattr(self.model.st_encoder4variant, 'node_embeddings'):
-            node_embeddings = self.model.st_encoder4variant.node_embeddings
+        elif hasattr(self.model, 'personalST_encoder') and hasattr(self.model.personalST_encoder, 'node_embeddings'):
+            node_embeddings = self.model.personalST_encoder.node_embeddings
             if use_cache:
                 self._cached_embeddings = node_embeddings.detach()
             return node_embeddings

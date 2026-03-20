@@ -2,8 +2,7 @@
 seed: 131
 device: cuda:0
 mode: train
-debug: False 
-ablation: all
+debug: False
 
 ## data
 data_dir: data
@@ -16,7 +15,7 @@ num_nodes: 325
 
 
 # federated learning
-num_clients: 8
+num_clients: 4
 local_epochs: 1
 num_rounds: 100
 

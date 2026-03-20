@@ -47,15 +47,13 @@ def test_federated_models(args):
     
     x_train = dataloader['train'].dataset.tensors[0].cpu().numpy()
     y_train = dataloader['train'].dataset.tensors[1].cpu().numpy()
-    time_train = dataloader['train'].dataset.tensors[2].cpu().numpy()
-    c_train = dataloader['train'].dataset.tensors[3].cpu().numpy()
+    
     x_val = dataloader['val'].dataset.tensors[0].cpu().numpy()
     y_val = dataloader['val'].dataset.tensors[1].cpu().numpy()
-    time_val = dataloader['val'].dataset.tensors[2].cpu().numpy()
-    c_val = dataloader['val'].dataset.tensors[3].cpu().numpy()
+    
     x_test = dataloader['test'].dataset.tensors[0].cpu().numpy()
     y_test = dataloader['test'].dataset.tensors[1].cpu().numpy()
-    c_test = dataloader['test'].dataset.tensors[2].cpu().numpy()
+    
     client_loaders = []
     val_loader_list = []
     test_loader_list = []    
@@ -67,27 +65,25 @@ def test_federated_models(args):
         nodes = clients_nodes[cid]
         x_split = x_train[:, :, nodes, :]
         y_split = y_train[:, :, nodes, :]
-        time_split = time_train[:]
-        c_split = c_train[:, :, nodes, :]
+        
         train_loader = STDataloader_T(
-            x_split, y_split, time_split, c_split,
+            x_split, y_split, 
             args.batch_size, device=args.device, shuffle=True
         )
         client_loaders.append(train_loader)
         x_val_split = x_val[:, :, nodes, :]
         y_val_split = y_val[:, :, nodes, :]
-        time_val_split = time_val[:]
-        c_val_split = c_val[:, :, nodes, :]
+        
         val_loader = STDataloader_T(
-            x_val_split, y_val_split, time_val_split, c_val_split,
+            x_val_split, y_val_split,
             args.batch_size, device=args.device, shuffle=False
         )
         val_loader_list.append(val_loader)
         x_test_split = x_test[:, :, nodes, :]
         y_test_split = y_test[:, :, nodes, :]
-        c_test_split = c_test[:, :, nodes, :]
+        
         test_loader = STDataloader_T(
-            x_test_split, y_test_split, None, c_test_split,
+            x_test_split, y_test_split, 
             args.batch_size, device=args.device, shuffle=False, train_flag=False
         )
         test_loader_list.append(test_loader)       

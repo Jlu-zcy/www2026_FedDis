@@ -74,23 +74,23 @@ class Server:
             'aggregate_all': False,
             'exclude_params': [],
             'include_params': [
-                'st_encoder4invariant.encoder.dcrnn_cells.0.gate.weights_pool', 
-                'st_encoder4invariant.encoder.dcrnn_cells.0.gate.bias_pool', 
-                'st_encoder4invariant.encoder.dcrnn_cells.0.update.weights_pool', 
-                'st_encoder4invariant.encoder.dcrnn_cells.0.update.bias_pool', 
-                'st_encoder4invariant.encoder.dcrnn_cells.1.gate.weights_pool', 
-                'st_encoder4invariant.encoder.dcrnn_cells.1.gate.bias_pool', 
-                'st_encoder4invariant.encoder.dcrnn_cells.1.update.weights_pool', 
-                'st_encoder4invariant.encoder.dcrnn_cells.1.update.bias_pool', 
-                'st_encoder4invariant.end_conv.weight', 
-                'st_encoder4invariant.end_conv.bias',
-                'traffic_pattern_memory.W_p',
+                'globalST_encoder.encoder.dcrnn_cells.0.gate.weights_pool', 
+                'globalST_encoder.encoder.dcrnn_cells.0.gate.bias_pool', 
+                'globalST_encoder.encoder.dcrnn_cells.0.update.weights_pool', 
+                'globalST_encoder.encoder.dcrnn_cells.0.update.bias_pool', 
+                'globalST_encoder.encoder.dcrnn_cells.1.gate.weights_pool', 
+                'globalST_encoder.encoder.dcrnn_cells.1.gate.bias_pool', 
+                'globalST_encoder.encoder.dcrnn_cells.1.update.weights_pool', 
+                'globalST_encoder.encoder.dcrnn_cells.1.update.bias_pool', 
+                'globalST_encoder.end_conv.weight', 
+                'globalST_encoder.end_conv.bias',
+                'global_pattern_memory.W_p',
             ]
         }
 
     def _process_traffic_pattern_parameters_separately(self, client_params_list, personalized_params_list):
         num_clients = len(client_params_list)
-        pattern_param_name = 'traffic_pattern_memory.W_p'
+        pattern_param_name = 'global_pattern_memory.W_p'
         
         pattern_params_list = []
         for i in range(num_clients):

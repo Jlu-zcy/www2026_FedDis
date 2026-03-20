@@ -64,10 +64,10 @@ class Trainer(object):
         pbar = tqdm(self.train_loader, desc=f'Epoch {epoch} [Train] Client {cid}', 
                    leave=True, ncols=100, position=1)
         
-        for batch_idx, (data, target, time_label, c) in enumerate(pbar):
+        for batch_idx, (data, target) in enumerate(pbar):
             self.optimizer.zero_grad()
             
-            Z, H = self.model(data)
+            D, S = self.model(data)
             
             attention = 0
             if self.client and hasattr(self.client, 'aggregation_method') and self.client.aggregation_method == 'attention':               
@@ -80,7 +80,7 @@ class Trainer(object):
                     attentions.append(attention.item())
          
             loss, _, lm, lp = self.model.calculate_loss(
-                Z, H, target, self.scaler, training=True
+                D, S, target, self.scaler, training=True
             )            
             total_loss_with_attention = loss + attention            
             total_loss_with_attention.backward()
@@ -130,11 +130,11 @@ class Trainer(object):
                    leave=True, ncols=100, position=2)
         
         with torch.no_grad():
-            for batch_idx, (data, target, time_label, c) in enumerate(pbar):
-                Z, H = self.model(data)
+            for batch_idx, (data, target) in enumerate(pbar):
+                D, S = self.model(data)
                 
                 loss, _, lm, lp = self.model.calculate_loss(
-                    Z, H, target, self.scaler, training=False
+                    D, S, target, self.scaler, training=False
                 )
                 
                 if not torch.isnan(loss):
@@ -171,9 +171,9 @@ class Trainer(object):
         test_pbar = tqdm(dataloader, desc='Testing', ncols=100, position=0, leave=True)
         
         with torch.no_grad():
-            for batch_idx, (data, target, c) in enumerate(test_pbar):
-                Z, H  = model(data,graph)
-                pred_output,att,C_tensor, H = model.predict_test(Z, H)
+            for batch_idx, (data, target) in enumerate(test_pbar):
+                D, S  = model(data,graph)
+                pred_output, att, D_hat, S_hat = model.predict_test(D, S)
                 pred_output = pred_output.squeeze(1)
                 target = target.squeeze(1)
                 y_true.append(target)
@@ -189,7 +189,7 @@ class Trainer(object):
         test_results = []
         
         mae, mape, rmse = test_metrics(y_pred, y_true)
-        logger.info("MAE: {:.2f}, MAPE: {:.4f}%, MSE: {:.2f}".format(mae, mape * 100, rmse))
+        logger.info("MAE: {:.2f}, MAPE: {:.4f}%, RMSE: {:.2f}".format(mae, mape * 100, rmse))
         test_results.append([mae, mape, rmse])
 
         return np.stack(test_results, axis=0)
