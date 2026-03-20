@@ -10,7 +10,7 @@ pip install -r requirements.txt
 ```
 
 ## Data
-You can download data from [BasicTS]([https://github.com/GestaltCogTeam/BasicTS] and unzip it into the data directory.
+You can download data from [BasicTS](https://github.com/GestaltCogTeam/BasicTS) and unzip it into the data directory.
 ```bash
 python data/generate_training_data.py
 ```
